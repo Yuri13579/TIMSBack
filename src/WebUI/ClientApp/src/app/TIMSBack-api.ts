@@ -14,6 +14,76 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export interface IAccountClient {
+    login(command: GetLoginQuery): Observable<UserInfoDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AccountClient implements IAccountClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    login(command: GetLoginQuery): Observable<UserInfoDto> {
+        let url_ = this.baseUrl + "/api/Account";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLogin(<any>response_);
+                } catch (e) {
+                    return <Observable<UserInfoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserInfoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLogin(response: HttpResponseBase): Observable<UserInfoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserInfoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserInfoDto>(<any>null);
+    }
+}
+
 export interface ICategoriesListsClient {
     get(): Observable<Category[]>;
 }
@@ -1163,6 +1233,82 @@ export class WeatherForecastClient implements IWeatherForecastClient {
     }
 }
 
+export class UserInfoDto implements IUserInfoDto {
+    user?: string | undefined;
+
+    constructor(data?: IUserInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.user = _data["user"];
+        }
+    }
+
+    static fromJS(data: any): UserInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["user"] = this.user;
+        return data; 
+    }
+}
+
+export interface IUserInfoDto {
+    user?: string | undefined;
+}
+
+export class GetLoginQuery implements IGetLoginQuery {
+    userName?: string | undefined;
+    password?: string | undefined;
+
+    constructor(data?: IGetLoginQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): GetLoginQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetLoginQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["password"] = this.password;
+        return data; 
+    }
+}
+
+export interface IGetLoginQuery {
+    userName?: string | undefined;
+    password?: string | undefined;
+}
+
 export abstract class AuditableEntity implements IAuditableEntity {
     createdBy?: string | undefined;
     created?: Date;
@@ -2189,6 +2335,19 @@ export class SalesOrderListDto implements ISalesOrderListDto {
     customerName?: string | undefined;
     statusId?: number;
     statusName?: string | undefined;
+    quantityStatusId?: number;
+    quantityStatusName?: string | undefined;
+    shippingStatusId?: number;
+    paymentStatusName?: string | undefined;
+    paymentStatusId?: number;
+    amount?: number | undefined;
+    amountTaxIncl?: number | undefined;
+    unpaidAmount?: number | undefined;
+    advancePayment?: number | undefined;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    cash?: number | undefined;
+    creditCard?: number | undefined;
 
     constructor(data?: ISalesOrderListDto) {
         if (data) {
@@ -2208,6 +2367,19 @@ export class SalesOrderListDto implements ISalesOrderListDto {
             this.customerName = _data["customerName"];
             this.statusId = _data["statusId"];
             this.statusName = _data["statusName"];
+            this.quantityStatusId = _data["quantityStatusId"];
+            this.quantityStatusName = _data["quantityStatusName"];
+            this.shippingStatusId = _data["shippingStatusId"];
+            this.paymentStatusName = _data["paymentStatusName"];
+            this.paymentStatusId = _data["paymentStatusId"];
+            this.amount = _data["amount"];
+            this.amountTaxIncl = _data["amountTaxIncl"];
+            this.unpaidAmount = _data["unpaidAmount"];
+            this.advancePayment = _data["advancePayment"];
+            this.wareHouseId = _data["wareHouseId"];
+            this.wareHouseName = _data["wareHouseName"];
+            this.cash = _data["cash"];
+            this.creditCard = _data["creditCard"];
         }
     }
 
@@ -2227,6 +2399,19 @@ export class SalesOrderListDto implements ISalesOrderListDto {
         data["customerName"] = this.customerName;
         data["statusId"] = this.statusId;
         data["statusName"] = this.statusName;
+        data["quantityStatusId"] = this.quantityStatusId;
+        data["quantityStatusName"] = this.quantityStatusName;
+        data["shippingStatusId"] = this.shippingStatusId;
+        data["paymentStatusName"] = this.paymentStatusName;
+        data["paymentStatusId"] = this.paymentStatusId;
+        data["amount"] = this.amount;
+        data["amountTaxIncl"] = this.amountTaxIncl;
+        data["unpaidAmount"] = this.unpaidAmount;
+        data["advancePayment"] = this.advancePayment;
+        data["wareHouseId"] = this.wareHouseId;
+        data["wareHouseName"] = this.wareHouseName;
+        data["cash"] = this.cash;
+        data["creditCard"] = this.creditCard;
         return data; 
     }
 }
@@ -2239,6 +2424,19 @@ export interface ISalesOrderListDto {
     customerName?: string | undefined;
     statusId?: number;
     statusName?: string | undefined;
+    quantityStatusId?: number;
+    quantityStatusName?: string | undefined;
+    shippingStatusId?: number;
+    paymentStatusName?: string | undefined;
+    paymentStatusId?: number;
+    amount?: number | undefined;
+    amountTaxIncl?: number | undefined;
+    unpaidAmount?: number | undefined;
+    advancePayment?: number | undefined;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    cash?: number | undefined;
+    creditCard?: number | undefined;
 }
 
 export class CreateTodoItemCommand implements ICreateTodoItemCommand {

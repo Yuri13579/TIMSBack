@@ -6,6 +6,38 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Account": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_Login",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetLoginQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CategoriesLists": {
       "get": {
         "tags": [
@@ -597,6 +629,30 @@
   },
   "components": {
     "schemas": {
+      "UserInfoDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetLoginQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "Category": {
         "allOf": [
           {
@@ -1284,6 +1340,64 @@
           },
           "statusName": {
             "type": "string",
+            "nullable": true
+          },
+          "quantityStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantityStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "amountTaxIncl": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "unpaidAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "advancePayment": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "wareHouseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wareHouseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cash": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "creditCard": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         }

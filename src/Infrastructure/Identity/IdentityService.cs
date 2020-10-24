@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using TIMSBack.Application.Login.Queries;
 
 namespace TIMSBack.Infrastructure.Identity
 {
@@ -53,5 +54,24 @@ namespace TIMSBack.Infrastructure.Identity
 
             return result.ToApplicationResult();
         }
+
+        public async Task<UserInfoDto> Login(string userName, string password)
+        {
+            var findByEmail = await _userManager.FindByEmailAsync(userName);
+            if (findByEmail != null)
+            {
+                var result = await _userManager.CheckPasswordAsync(findByEmail, password);
+                if (result)
+                {
+                    return new UserInfoDto {User = findByEmail.Email};
+                }
+                return null;
+            }
+
+            return null;
+
+        }
+
+
     }
 }
