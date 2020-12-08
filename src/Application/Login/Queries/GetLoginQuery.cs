@@ -9,13 +9,13 @@ using TIMSBack.Application.ProductLists.Queries.GetProducts;
 
 namespace TIMSBack.Application.Login.Queries
 {
-    public class GetLoginQuery : IRequest<UserInfoDto>
+    public class GetLoginQuery : IRequest<LoginResultDto>
     {
         public string UserName { get; set; }
         public string Password { get; set; }
     }
 
-    public class GetSelectedProductsQueryHandler : IRequestHandler<GetLoginQuery, UserInfoDto>
+    public class GetSelectedProductsQueryHandler : IRequestHandler<GetLoginQuery, LoginResultDto>
     {
         private readonly IIdentityService _identityService;
        
@@ -27,7 +27,7 @@ namespace TIMSBack.Application.Login.Queries
         }
 
 
-        public async Task<UserInfoDto> Handle(GetLoginQuery request, CancellationToken cancellationToken)
+        public async Task<LoginResultDto> Handle(GetLoginQuery request, CancellationToken cancellationToken)
         {
             var result =  await _identityService.Login(request.UserName, request.Password);
             return result;

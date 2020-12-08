@@ -14,16 +14,23 @@ namespace TIMSBack.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            //var ass = typeof(ApplicationDbContext).Assembly.FullName;
+
+
+            string conString = configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+            var useInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
+            if (useInMemoryDatabase)
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("TIMSBackDb"));
+             options.UseInMemoryDatabase("TIMSBackDb")
+                        );
             }
             else
             {
+                string defaultConnection = configuration.GetConnectionString("DefaultConnection");
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        defaultConnection,
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }
 

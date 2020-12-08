@@ -1,10 +1,19 @@
-﻿using TIMSBack.Application.Common.Interfaces;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using TIMSBack.Application.Common.Interfaces;
 using TIMSBack.Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Policy;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TIMSBack.Application.Login.Queries;
+using TIMSBack.Domain.Entities.Auth;
+using TIMSBack.Domain.Entities.Moq;
+using TIMSBack.Infrastructure.Services;
+
 
 namespace TIMSBack.Infrastructure.Identity
 {
@@ -55,7 +64,7 @@ namespace TIMSBack.Infrastructure.Identity
             return result.ToApplicationResult();
         }
 
-        public async Task<UserInfoDto> Login(string userName, string password)
+        public async Task<LoginResultDto> Login(string userName, string password)
         {
             var findByEmail = await _userManager.FindByEmailAsync(userName);
             if (findByEmail != null)
@@ -63,7 +72,12 @@ namespace TIMSBack.Infrastructure.Identity
                 var result = await _userManager.CheckPasswordAsync(findByEmail, password);
                 if (result)
                 {
-                    return new UserInfoDto {User = findByEmail.Email};
+                    List<Claim> myClaims = new List<Claim>();
+                    myClaims.Add(new Claim("Role", "UserModel"));
+                    var roles = new JwtSecurityToken(claims: myClaims);
+                    var token = new JwtSecurityTokenHandler().WriteToken(roles);
+
+                    return new LoginResultDto {Token = token.ToString()};
                 }
                 return null;
             }
@@ -72,6 +86,47 @@ namespace TIMSBack.Infrastructure.Identity
 
         }
 
+        public async Task<string> Register(RegisterModel model)
+        {
+            ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.UserName };
+            // добавляем пользователя
+            var ch0 = await _userManager.FindByEmailAsync(model.Email);
+            var create = await _userManager.CreateAsync(user, model.Password);
+            if (create.Succeeded)
+            {
+                var ch = await _userManager.FindByEmailAsync(model.Email);
+                
+                // генерация токена для пользователя
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string callbackUrl = "sdasd";
+
+                //var callbackUrl = Url.Action(
+                //    "ConfirmEmail",
+                //    "Account",
+                //    new { userId = user.Id, code = code },
+                //    protocol: HttpContext.Request.Scheme);
+                
+                EmailService emailService = new EmailService();
+                await emailService.SendEmailAsync(model.Email, "Confirm your account",
+                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                //return Content(
+                //    "Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                return new string("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+
+            }
+            else
+            {
+                string error = null;
+                foreach (var er in create.Errors)
+                {
+                    error += er.Code + " " + er.Description;
+                }
+
+                return error;
+            }
+
+        }
 
     }
 }

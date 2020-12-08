@@ -3,6 +3,7 @@ using TIMSBack.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using TIMSBack.Domain.Entities.Auth;
 
 namespace TIMSBack.Application.Common.Interfaces
 {
@@ -36,8 +37,8 @@ namespace TIMSBack.Application.Common.Interfaces
          DbSet<PaymentStatus> PaymentStatuses { get;  set; }
          DbSet<WareHouse> WareHouses { get;  set; }
          DbSet<Domain.Entities.SalesOrder> SalesOrders { get; set; }
-
-
+        // DbSet<UserModel> Users { get; set; }
+        
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

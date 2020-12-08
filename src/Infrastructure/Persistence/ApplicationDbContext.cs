@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TIMSBack.Domain.Entities.Auth;
 
 namespace TIMSBack.Infrastructure.Persistence
 {
@@ -29,6 +30,8 @@ namespace TIMSBack.Infrastructure.Persistence
         {
             _currentUserService = currentUserService;
             _dateTime = dateTime;
+           // Database.EnsureDeleted();   // удаляем бд со старой схемой
+           // Database.EnsureCreated();   // создаем бд с новой схемой
         }
 
         public DbSet<TodoList> TodoLists { get; set; }
@@ -58,26 +61,28 @@ namespace TIMSBack.Infrastructure.Persistence
         public DbSet<PaymentStatus> PaymentStatuses { get;  set; }
         public DbSet<WareHouse> WareHouses { get;  set; }
         public DbSet<SalesOrder> SalesOrders { get; set; }
+      //  public DbSet<UserModel> Users { get; set; }
+        
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
-                        entry.Entity.Created = _dateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                        entry.Entity.LastModified = _dateTime.Now;
-                        break;
-                }
-            }
+        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        //{
+        //    //foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+        //    //{
+        //    //    switch (entry.State)
+        //    //    {
+        //    //        case EntityState.Added:
+        //    //            entry.Entity.CreatedBy = _currentUserService.UserId;
+        //    //            entry.Entity.Created = _dateTime.Now;
+        //    //            break;
+        //    //        case EntityState.Modified:
+        //    //            entry.Entity.LastModifiedBy = _currentUserService.UserId;
+        //    //            entry.Entity.LastModified = _dateTime.Now;
+        //    //            break;
+        //    //    }
+        //    //}
 
-            return base.SaveChangesAsync(cancellationToken);
-        }
+        //    return base.SaveChangesAsync(cancellationToken);
+        //}
 
         public async Task BeginTransactionAsync()
         {

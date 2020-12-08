@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TIMSBack.WebUI.Controllers
 {
-   // [Authorize]
+    [Authorize]
     public class TodoItemsController : ApiController
     {
         [HttpPost]

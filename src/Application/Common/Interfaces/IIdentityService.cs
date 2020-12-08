@@ -1,6 +1,7 @@
 ﻿using TIMSBack.Application.Common.Models;
 using System.Threading.Tasks;
 using TIMSBack.Application.Login.Queries;
+using TIMSBack.Domain.Entities.Auth;
 
 namespace TIMSBack.Application.Common.Interfaces
 {
@@ -12,6 +13,8 @@ namespace TIMSBack.Application.Common.Interfaces
 
         Task<Result> DeleteUserAsync(string userId);
 
-        Task<UserInfoDto> Login(string userName, string password);
+        Task<LoginResultDto> Login(string userName, string password);
+
+        Task<string> Register(RegisterModel model);
     }
 }

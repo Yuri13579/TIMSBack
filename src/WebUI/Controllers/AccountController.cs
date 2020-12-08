@@ -15,7 +15,7 @@ namespace TIMSBack.WebUI.Controllers
     {
         
         [HttpPost]
-        public async Task<UserInfoDto> Login(GetLoginQuery command)
+        public async Task<LoginResultDto> Login(GetLoginQuery command)
         {
             return await Mediator.Send(command);
         }

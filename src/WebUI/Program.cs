@@ -28,7 +28,7 @@ namespace TIMSBack.WebUI
                     if (context.Database.IsSqlServer())
                     {
                         context.Database.Migrate();
-                    }                   
+                    }
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
@@ -39,7 +39,7 @@ namespace TIMSBack.WebUI
                 {
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-                    logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+                    logger.LogError(ex, "An error occurred while migrating or seeding the database." + ex.Message + ex.StackTrace);
 
                     throw;
                 }

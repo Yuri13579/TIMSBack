@@ -15,7 +15,17 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using FluentValidation;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using TIMSBack.Application.Login;
+using TIMSBack.Domain.Entities;
+using TIMSBack.Domain.Entities.Auth;
+using TIMSBack.Domain.Entities.Moq;
 
 namespace TIMSBack.WebUI
 {
@@ -32,12 +42,24 @@ namespace TIMSBack.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddApplication();
             services.AddInfrastructure(Configuration);
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+           // services.AddTransient<Microsoft.AspNetCore.Identity.UserManager<UserModel>>();
+           
             services.AddHttpContextAccessor();
+
+            //string defaultConnection = Configuration.GetConnectionString("DefaultConnection");
+            //// добавление ApplicationDbContext для взаимодействия с базой данных учетных записей
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(defaultConnection));
+
+            // добавление сервисов Idenity
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();
@@ -85,7 +107,33 @@ namespace TIMSBack.WebUI
                     });
             });
 
-        //    services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
 
         }
 
@@ -120,10 +168,11 @@ namespace TIMSBack.WebUI
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();
-
+            
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
