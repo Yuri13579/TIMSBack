@@ -38,16 +38,7 @@ namespace TIMSBack.WebUI.Controllers
         [HttpPost("register")] //
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model)
         {
-
-
-
-
-
-
-
-
-
-
+            
             var user = await _userService.RegisterAsync(model);
 
             if (user == null)
