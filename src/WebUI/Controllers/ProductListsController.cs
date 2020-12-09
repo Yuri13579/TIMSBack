@@ -17,7 +17,7 @@ using TIMSBack.Application.TodoLists.Queries.GetTodos;
 
 namespace TIMSBack.WebUI.Controllers
 {
-    [Authorize]
+  //  [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductListsController : ApiController

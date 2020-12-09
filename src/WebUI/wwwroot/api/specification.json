@@ -125,12 +125,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -160,12 +155,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/Products": {
@@ -1805,10 +1795,6 @@
               "lastName": {
                 "type": "string",
                 "minLength": 1
-              },
-              "email": {
-                "type": "string",
-                "nullable": true
               }
             }
           }

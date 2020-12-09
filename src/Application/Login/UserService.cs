@@ -42,6 +42,7 @@ namespace TIMSBack.Application.Login
 
         public UserModel Authenticate(string username, string password)
         {
+           
           //var user = _context.Users.SingleOrDefault(x => x.UserName == username && x.Password == password);
 
           //  // return null if user not found

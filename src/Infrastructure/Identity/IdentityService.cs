@@ -20,10 +20,12 @@ namespace TIMSBack.Infrastructure.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IdentityService(UserManager<ApplicationUser> userManager)
+        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -66,10 +68,12 @@ namespace TIMSBack.Infrastructure.Identity
 
         public async Task<LoginResultDto> Login(string userName, string password)
         {
-            var findByEmail = await _userManager.FindByEmailAsync(userName);
+           var findByEmail = await _userManager.FindByEmailAsync(userName);
+            
             if (findByEmail != null)
             {
                 var result = await _userManager.CheckPasswordAsync(findByEmail, password);
+              
                 if (result)
                 {
                     List<Claim> myClaims = new List<Claim>();
@@ -88,13 +92,14 @@ namespace TIMSBack.Infrastructure.Identity
 
         public async Task<string> Register(RegisterModel model)
         {
-            ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.UserName };
+
+            ApplicationUser user = new ApplicationUser { Email = model.UserName, UserName = model.UserName };
             // добавляем пользователя
-            var ch0 = await _userManager.FindByEmailAsync(model.Email);
+          
             var create = await _userManager.CreateAsync(user, model.Password);
             if (create.Succeeded)
             {
-                var ch = await _userManager.FindByEmailAsync(model.Email);
+                var ch = await _userManager.FindByEmailAsync(model.UserName);
                 
                 // генерация токена для пользователя
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -107,7 +112,7 @@ namespace TIMSBack.Infrastructure.Identity
                 //    protocol: HttpContext.Request.Scheme);
                 
                 EmailService emailService = new EmailService();
-                await emailService.SendEmailAsync(model.Email, "Confirm your account",
+                await emailService.SendEmailAsync(model.UserName, "Confirm your account",
                     $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
                 //return Content(

@@ -8,6 +8,6 @@ namespace TIMSBack.Domain.Entities
     {
         public static string Host = "Smtp.Gmail.com";// { get; set; }
         public static string UserName = "ura19923@gmail.com";
-        public static string Password = "asp13579000";
+        public static string Password = "";
     }
 }

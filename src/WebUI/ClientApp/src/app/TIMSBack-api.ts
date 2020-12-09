@@ -3163,7 +3163,6 @@ export interface IAuthenticateModel {
 export class RegisterModel extends AuthenticateModel implements IRegisterModel {
     firstName!: string;
     lastName!: string;
-    email?: string | undefined;
 
     constructor(data?: IRegisterModel) {
         super(data);
@@ -3174,7 +3173,6 @@ export class RegisterModel extends AuthenticateModel implements IRegisterModel {
         if (_data) {
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
-            this.email = _data["email"];
         }
     }
 
@@ -3189,7 +3187,6 @@ export class RegisterModel extends AuthenticateModel implements IRegisterModel {
         data = typeof data === 'object' ? data : {};
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
-        data["email"] = this.email;
         super.toJSON(data);
         return data; 
     }
@@ -3198,7 +3195,6 @@ export class RegisterModel extends AuthenticateModel implements IRegisterModel {
 export interface IRegisterModel extends IAuthenticateModel {
     firstName: string;
     lastName: string;
-    email?: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {

@@ -12,6 +12,6 @@ namespace TIMSBack.Domain.Entities.Auth
         
         [Required]
         public string LastName { get; set; }
-        public string Email { get; set; }
+
     }
 }
