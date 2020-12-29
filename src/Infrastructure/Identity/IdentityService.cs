@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using TIMSBack.Application.Common.Interfaces;
 using TIMSBack.Application.Common.Models;
@@ -99,8 +100,7 @@ namespace TIMSBack.Infrastructure.Identity
             var create = await _userManager.CreateAsync(user, model.Password);
             if (create.Succeeded)
             {
-                var ch = await _userManager.FindByEmailAsync(model.UserName);
-                
+                             
                 // генерация токена для пользователя
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 string callbackUrl = "sdasd";
@@ -110,14 +110,22 @@ namespace TIMSBack.Infrastructure.Identity
                 //    "Account",
                 //    new { userId = user.Id, code = code },
                 //    protocol: HttpContext.Request.Scheme);
-                
-                EmailService emailService = new EmailService();
-                await emailService.SendEmailAsync(model.UserName, "Confirm your account",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                //return Content(
-                //    "Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-                return new string("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                try
+                {
+                    EmailService emailService = new EmailService();
+                    await emailService.SendEmailAsync(model.UserName, "Confirm your account",
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                    //return Content(
+                    //    "Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                    return new string("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                }
+                catch (Exception e)
+                {
+                    return new string(e.Message + e.StackTrace);
+                }
+              
 
             }
             else

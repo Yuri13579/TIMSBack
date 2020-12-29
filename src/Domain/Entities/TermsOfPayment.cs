@@ -7,5 +7,6 @@ namespace TIMSBack.Domain.Entities
     public class TermsOfPayment: BaseIdName
     {
         public ICollection<Customer> Customers { get; set; }
+        public ICollection<Supplier> Suppliers { get; set; }
     }
 }

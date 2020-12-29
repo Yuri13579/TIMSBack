@@ -585,6 +585,76 @@ export class ProductsClient implements IProductsClient {
     }
 }
 
+export interface IPurchaseOrderListsClient {
+    get(): Observable<PurchasesOrderListDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PurchaseOrderListsClient implements IPurchaseOrderListsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<PurchasesOrderListDto[]> {
+        let url_ = this.baseUrl + "/api/PurchaseOrderLists";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<PurchasesOrderListDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PurchasesOrderListDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<PurchasesOrderListDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PurchasesOrderListDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PurchasesOrderListDto[]>(<any>null);
+    }
+}
+
 export interface ISalesOrderListsClient {
     get(): Observable<SalesOrderListDto[]>;
 }
@@ -652,6 +722,76 @@ export class SalesOrderListsClient implements ISalesOrderListsClient {
             }));
         }
         return _observableOf<SalesOrderListDto[]>(<any>null);
+    }
+}
+
+export interface ISupplierClient {
+    get(): Observable<SupplierDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SupplierClient implements ISupplierClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<SupplierDto[]> {
+        let url_ = this.baseUrl + "/api/Supplier";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<SupplierDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SupplierDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<SupplierDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SupplierDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SupplierDto[]>(<any>null);
     }
 }
 
@@ -1513,6 +1653,216 @@ export class WeatherForecastClient implements IWeatherForecastClient {
     }
 }
 
+export interface IWorkOrderClient {
+    get(): Observable<WorkOrderDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class WorkOrderClient implements IWorkOrderClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<WorkOrderDto[]> {
+        let url_ = this.baseUrl + "/api/WorkOrder";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<WorkOrderDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<WorkOrderDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<WorkOrderDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(WorkOrderDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<WorkOrderDto[]>(<any>null);
+    }
+}
+
+export interface IProductsAndServicesClient {
+    get(): Observable<ProductsAndServicesDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ProductsAndServicesClient implements IProductsAndServicesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<ProductsAndServicesDto[]> {
+        let url_ = this.baseUrl + "/api/ProductsAndServices";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<ProductsAndServicesDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProductsAndServicesDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<ProductsAndServicesDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProductsAndServicesDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProductsAndServicesDto[]>(<any>null);
+    }
+}
+
+export interface ITransferClient {
+    get(): Observable<TransferDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TransferClient implements ITransferClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<TransferDto[]> {
+        let url_ = this.baseUrl + "/api/Transfer";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<TransferDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TransferDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<TransferDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TransferDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TransferDto[]>(<any>null);
+    }
+}
+
 export class LoginResultDto implements ILoginResultDto {
     token?: string | undefined;
 
@@ -2054,6 +2404,11 @@ export class ProductOnHand extends AuditableEntity implements IProductOnHand {
     productId?: number;
     product?: Product | undefined;
     onHandCount?: number;
+    reservedQuantity?: number;
+    commitedQuantity?: number;
+    awaitingQuantity?: number;
+    wareHouseId?: number;
+    documentId?: number | undefined;
 
     constructor(data?: IProductOnHand) {
         super(data);
@@ -2066,6 +2421,11 @@ export class ProductOnHand extends AuditableEntity implements IProductOnHand {
             this.productId = _data["productId"];
             this.product = _data["product"] ? Product.fromJS(_data["product"]) : <any>undefined;
             this.onHandCount = _data["onHandCount"];
+            this.reservedQuantity = _data["reservedQuantity"];
+            this.commitedQuantity = _data["commitedQuantity"];
+            this.awaitingQuantity = _data["awaitingQuantity"];
+            this.wareHouseId = _data["wareHouseId"];
+            this.documentId = _data["documentId"];
         }
     }
 
@@ -2082,6 +2442,11 @@ export class ProductOnHand extends AuditableEntity implements IProductOnHand {
         data["productId"] = this.productId;
         data["product"] = this.product ? this.product.toJSON() : <any>undefined;
         data["onHandCount"] = this.onHandCount;
+        data["reservedQuantity"] = this.reservedQuantity;
+        data["commitedQuantity"] = this.commitedQuantity;
+        data["awaitingQuantity"] = this.awaitingQuantity;
+        data["wareHouseId"] = this.wareHouseId;
+        data["documentId"] = this.documentId;
         super.toJSON(data);
         return data; 
     }
@@ -2092,6 +2457,11 @@ export interface IProductOnHand extends IAuditableEntity {
     productId?: number;
     product?: Product | undefined;
     onHandCount?: number;
+    reservedQuantity?: number;
+    commitedQuantity?: number;
+    awaitingQuantity?: number;
+    wareHouseId?: number;
+    documentId?: number | undefined;
 }
 
 export class ProductPrice extends AuditableEntity implements IProductPrice {
@@ -2589,6 +2959,118 @@ export interface IUpdateProductCommand {
     productUnitId?: number;
 }
 
+export class PurchasesOrderListDto implements IPurchasesOrderListDto {
+    id?: number;
+    tag?: string | undefined;
+    date?: Date;
+    supplierId?: number;
+    supplierName?: string | undefined;
+    statusId?: number;
+    statusName?: string | undefined;
+    quantityStatusId?: number;
+    quantityStatusName?: string | undefined;
+    shippingStatusId?: number;
+    paymentStatusName?: string | undefined;
+    paymentStatusId?: number;
+    amount?: number | undefined;
+    amountTaxIncl?: number | undefined;
+    unpaidAmount?: number | undefined;
+    advancePayment?: number | undefined;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    cash?: number | undefined;
+    creditCard?: number | undefined;
+
+    constructor(data?: IPurchasesOrderListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tag = _data["tag"];
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.supplierId = _data["supplierId"];
+            this.supplierName = _data["supplierName"];
+            this.statusId = _data["statusId"];
+            this.statusName = _data["statusName"];
+            this.quantityStatusId = _data["quantityStatusId"];
+            this.quantityStatusName = _data["quantityStatusName"];
+            this.shippingStatusId = _data["shippingStatusId"];
+            this.paymentStatusName = _data["paymentStatusName"];
+            this.paymentStatusId = _data["paymentStatusId"];
+            this.amount = _data["amount"];
+            this.amountTaxIncl = _data["amountTaxIncl"];
+            this.unpaidAmount = _data["unpaidAmount"];
+            this.advancePayment = _data["advancePayment"];
+            this.wareHouseId = _data["wareHouseId"];
+            this.wareHouseName = _data["wareHouseName"];
+            this.cash = _data["cash"];
+            this.creditCard = _data["creditCard"];
+        }
+    }
+
+    static fromJS(data: any): PurchasesOrderListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PurchasesOrderListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tag"] = this.tag;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["supplierId"] = this.supplierId;
+        data["supplierName"] = this.supplierName;
+        data["statusId"] = this.statusId;
+        data["statusName"] = this.statusName;
+        data["quantityStatusId"] = this.quantityStatusId;
+        data["quantityStatusName"] = this.quantityStatusName;
+        data["shippingStatusId"] = this.shippingStatusId;
+        data["paymentStatusName"] = this.paymentStatusName;
+        data["paymentStatusId"] = this.paymentStatusId;
+        data["amount"] = this.amount;
+        data["amountTaxIncl"] = this.amountTaxIncl;
+        data["unpaidAmount"] = this.unpaidAmount;
+        data["advancePayment"] = this.advancePayment;
+        data["wareHouseId"] = this.wareHouseId;
+        data["wareHouseName"] = this.wareHouseName;
+        data["cash"] = this.cash;
+        data["creditCard"] = this.creditCard;
+        return data; 
+    }
+}
+
+export interface IPurchasesOrderListDto {
+    id?: number;
+    tag?: string | undefined;
+    date?: Date;
+    supplierId?: number;
+    supplierName?: string | undefined;
+    statusId?: number;
+    statusName?: string | undefined;
+    quantityStatusId?: number;
+    quantityStatusName?: string | undefined;
+    shippingStatusId?: number;
+    paymentStatusName?: string | undefined;
+    paymentStatusId?: number;
+    amount?: number | undefined;
+    amountTaxIncl?: number | undefined;
+    unpaidAmount?: number | undefined;
+    advancePayment?: number | undefined;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    cash?: number | undefined;
+    creditCard?: number | undefined;
+}
+
 export class SalesOrderListDto implements ISalesOrderListDto {
     id?: number;
     tag?: string | undefined;
@@ -2699,6 +3181,79 @@ export interface ISalesOrderListDto {
     wareHouseName?: string | undefined;
     cash?: number | undefined;
     creditCard?: number | undefined;
+}
+
+export class SupplierDto extends BaseIdName implements ISupplierDto {
+    email?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    categorySupplierId?: number;
+    categorySupplier?: string | undefined;
+    taxLocation?: string | undefined;
+    termsOfPaymentId?: number;
+    termsOfPayment?: string | undefined;
+    theyOwnYou?: number;
+    youOwnThem?: number;
+    balance?: number;
+
+    constructor(data?: ISupplierDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.email = _data["email"];
+            this.city = _data["city"];
+            this.country = _data["country"];
+            this.categorySupplierId = _data["categorySupplierId"];
+            this.categorySupplier = _data["categorySupplier"];
+            this.taxLocation = _data["taxLocation"];
+            this.termsOfPaymentId = _data["termsOfPaymentId"];
+            this.termsOfPayment = _data["termsOfPayment"];
+            this.theyOwnYou = _data["theyOwnYou"];
+            this.youOwnThem = _data["youOwnThem"];
+            this.balance = _data["balance"];
+        }
+    }
+
+    static fromJS(data: any): SupplierDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SupplierDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["city"] = this.city;
+        data["country"] = this.country;
+        data["categorySupplierId"] = this.categorySupplierId;
+        data["categorySupplier"] = this.categorySupplier;
+        data["taxLocation"] = this.taxLocation;
+        data["termsOfPaymentId"] = this.termsOfPaymentId;
+        data["termsOfPayment"] = this.termsOfPayment;
+        data["theyOwnYou"] = this.theyOwnYou;
+        data["youOwnThem"] = this.youOwnThem;
+        data["balance"] = this.balance;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ISupplierDto extends IBaseIdName {
+    email?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    categorySupplierId?: number;
+    categorySupplier?: string | undefined;
+    taxLocation?: string | undefined;
+    termsOfPaymentId?: number;
+    termsOfPayment?: string | undefined;
+    theyOwnYou?: number;
+    youOwnThem?: number;
+    balance?: number;
 }
 
 export class CreateTodoItemCommand implements ICreateTodoItemCommand {
@@ -3243,6 +3798,447 @@ export interface IWeatherForecast {
     temperatureC?: number;
     temperatureF?: number;
     summary?: string | undefined;
+}
+
+export class WorkOrder extends BaseIdName implements IWorkOrder {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    materialLoading?: number;
+    finishedGood?: number;
+    estimatedCost?: number;
+    inputWareHouseId?: number;
+    inputWareHouse?: WareHouse | undefined;
+    outWareHouseId?: number;
+    outWareHouse?: WareHouse | undefined;
+
+    constructor(data?: IWorkOrder) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.status = _data["status"] ? Status.fromJS(_data["status"]) : <any>undefined;
+            this.quantityStatusId = _data["quantityStatusId"];
+            this.quantityStatus = _data["quantityStatus"] ? QuantityStatus.fromJS(_data["quantityStatus"]) : <any>undefined;
+            this.materialLoading = _data["materialLoading"];
+            this.finishedGood = _data["finishedGood"];
+            this.estimatedCost = _data["estimatedCost"];
+            this.inputWareHouseId = _data["inputWareHouseId"];
+            this.inputWareHouse = _data["inputWareHouse"] ? WareHouse.fromJS(_data["inputWareHouse"]) : <any>undefined;
+            this.outWareHouseId = _data["outWareHouseId"];
+            this.outWareHouse = _data["outWareHouse"] ? WareHouse.fromJS(_data["outWareHouse"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): WorkOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["status"] = this.status ? this.status.toJSON() : <any>undefined;
+        data["quantityStatusId"] = this.quantityStatusId;
+        data["quantityStatus"] = this.quantityStatus ? this.quantityStatus.toJSON() : <any>undefined;
+        data["materialLoading"] = this.materialLoading;
+        data["finishedGood"] = this.finishedGood;
+        data["estimatedCost"] = this.estimatedCost;
+        data["inputWareHouseId"] = this.inputWareHouseId;
+        data["inputWareHouse"] = this.inputWareHouse ? this.inputWareHouse.toJSON() : <any>undefined;
+        data["outWareHouseId"] = this.outWareHouseId;
+        data["outWareHouse"] = this.outWareHouse ? this.outWareHouse.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IWorkOrder extends IBaseIdName {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    materialLoading?: number;
+    finishedGood?: number;
+    estimatedCost?: number;
+    inputWareHouseId?: number;
+    inputWareHouse?: WareHouse | undefined;
+    outWareHouseId?: number;
+    outWareHouse?: WareHouse | undefined;
+}
+
+export class WorkOrderDto extends WorkOrder implements IWorkOrderDto {
+    statusName?: string | undefined;
+    quantityStatusName?: string | undefined;
+    inputWareHouseName?: string | undefined;
+    outWareHouseName?: string | undefined;
+
+    constructor(data?: IWorkOrderDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.statusName = _data["statusName"];
+            this.quantityStatusName = _data["quantityStatusName"];
+            this.inputWareHouseName = _data["inputWareHouseName"];
+            this.outWareHouseName = _data["outWareHouseName"];
+        }
+    }
+
+    static fromJS(data: any): WorkOrderDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WorkOrderDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusName"] = this.statusName;
+        data["quantityStatusName"] = this.quantityStatusName;
+        data["inputWareHouseName"] = this.inputWareHouseName;
+        data["outWareHouseName"] = this.outWareHouseName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IWorkOrderDto extends IWorkOrder {
+    statusName?: string | undefined;
+    quantityStatusName?: string | undefined;
+    inputWareHouseName?: string | undefined;
+    outWareHouseName?: string | undefined;
+}
+
+export class Status extends BaseIdName implements IStatus {
+
+    constructor(data?: IStatus) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+    }
+
+    static fromJS(data: any): Status {
+        data = typeof data === 'object' ? data : {};
+        let result = new Status();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IStatus extends IBaseIdName {
+}
+
+export class QuantityStatus extends BaseIdName implements IQuantityStatus {
+
+    constructor(data?: IQuantityStatus) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+    }
+
+    static fromJS(data: any): QuantityStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new QuantityStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IQuantityStatus extends IBaseIdName {
+}
+
+export class WareHouse extends BaseIdName implements IWareHouse {
+
+    constructor(data?: IWareHouse) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+    }
+
+    static fromJS(data: any): WareHouse {
+        data = typeof data === 'object' ? data : {};
+        let result = new WareHouse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IWareHouse extends IBaseIdName {
+}
+
+export class ProductsAndServicesDto implements IProductsAndServicesDto {
+    name?: string | undefined;
+    productId?: number;
+    productName?: string | undefined;
+    grossWeight?: number;
+    sku?: string | undefined;
+    barcode?: number;
+    mpe?: number;
+    photo?: string | undefined;
+    unit?: string | undefined;
+    category?: string | undefined;
+    trademark?: string | undefined;
+    onHand?: number;
+    price?: number;
+    trademarkId?: number;
+    categoryId?: number;
+    reservedQuantity?: number;
+    commitedQuantity?: number;
+    awaitingQuantity?: number;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    documentId?: number | undefined;
+
+    constructor(data?: IProductsAndServicesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.productId = _data["productId"];
+            this.productName = _data["productName"];
+            this.grossWeight = _data["grossWeight"];
+            this.sku = _data["sku"];
+            this.barcode = _data["barcode"];
+            this.mpe = _data["mpe"];
+            this.photo = _data["photo"];
+            this.unit = _data["unit"];
+            this.category = _data["category"];
+            this.trademark = _data["trademark"];
+            this.onHand = _data["onHand"];
+            this.price = _data["price"];
+            this.trademarkId = _data["trademarkId"];
+            this.categoryId = _data["categoryId"];
+            this.reservedQuantity = _data["reservedQuantity"];
+            this.commitedQuantity = _data["commitedQuantity"];
+            this.awaitingQuantity = _data["awaitingQuantity"];
+            this.wareHouseId = _data["wareHouseId"];
+            this.wareHouseName = _data["wareHouseName"];
+            this.documentId = _data["documentId"];
+        }
+    }
+
+    static fromJS(data: any): ProductsAndServicesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductsAndServicesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["productId"] = this.productId;
+        data["productName"] = this.productName;
+        data["grossWeight"] = this.grossWeight;
+        data["sku"] = this.sku;
+        data["barcode"] = this.barcode;
+        data["mpe"] = this.mpe;
+        data["photo"] = this.photo;
+        data["unit"] = this.unit;
+        data["category"] = this.category;
+        data["trademark"] = this.trademark;
+        data["onHand"] = this.onHand;
+        data["price"] = this.price;
+        data["trademarkId"] = this.trademarkId;
+        data["categoryId"] = this.categoryId;
+        data["reservedQuantity"] = this.reservedQuantity;
+        data["commitedQuantity"] = this.commitedQuantity;
+        data["awaitingQuantity"] = this.awaitingQuantity;
+        data["wareHouseId"] = this.wareHouseId;
+        data["wareHouseName"] = this.wareHouseName;
+        data["documentId"] = this.documentId;
+        return data; 
+    }
+}
+
+export interface IProductsAndServicesDto {
+    name?: string | undefined;
+    productId?: number;
+    productName?: string | undefined;
+    grossWeight?: number;
+    sku?: string | undefined;
+    barcode?: number;
+    mpe?: number;
+    photo?: string | undefined;
+    unit?: string | undefined;
+    category?: string | undefined;
+    trademark?: string | undefined;
+    onHand?: number;
+    price?: number;
+    trademarkId?: number;
+    categoryId?: number;
+    reservedQuantity?: number;
+    commitedQuantity?: number;
+    awaitingQuantity?: number;
+    wareHouseId?: number;
+    wareHouseName?: string | undefined;
+    documentId?: number | undefined;
+}
+
+export class Transfer extends BaseIdName implements ITransfer {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    sentQuantity?: number;
+    receivedQuantity?: number;
+    stockAmount?: number;
+    sourceWareHouseId?: number;
+    sourceWareHouse?: WareHouse | undefined;
+    destinationWareHouseId?: number;
+    destinationWareHouse?: WareHouse | undefined;
+
+    constructor(data?: ITransfer) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.status = _data["status"] ? Status.fromJS(_data["status"]) : <any>undefined;
+            this.quantityStatusId = _data["quantityStatusId"];
+            this.quantityStatus = _data["quantityStatus"] ? QuantityStatus.fromJS(_data["quantityStatus"]) : <any>undefined;
+            this.sentQuantity = _data["sentQuantity"];
+            this.receivedQuantity = _data["receivedQuantity"];
+            this.stockAmount = _data["stockAmount"];
+            this.sourceWareHouseId = _data["sourceWareHouseId"];
+            this.sourceWareHouse = _data["sourceWareHouse"] ? WareHouse.fromJS(_data["sourceWareHouse"]) : <any>undefined;
+            this.destinationWareHouseId = _data["destinationWareHouseId"];
+            this.destinationWareHouse = _data["destinationWareHouse"] ? WareHouse.fromJS(_data["destinationWareHouse"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Transfer {
+        data = typeof data === 'object' ? data : {};
+        let result = new Transfer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["status"] = this.status ? this.status.toJSON() : <any>undefined;
+        data["quantityStatusId"] = this.quantityStatusId;
+        data["quantityStatus"] = this.quantityStatus ? this.quantityStatus.toJSON() : <any>undefined;
+        data["sentQuantity"] = this.sentQuantity;
+        data["receivedQuantity"] = this.receivedQuantity;
+        data["stockAmount"] = this.stockAmount;
+        data["sourceWareHouseId"] = this.sourceWareHouseId;
+        data["sourceWareHouse"] = this.sourceWareHouse ? this.sourceWareHouse.toJSON() : <any>undefined;
+        data["destinationWareHouseId"] = this.destinationWareHouseId;
+        data["destinationWareHouse"] = this.destinationWareHouse ? this.destinationWareHouse.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITransfer extends IBaseIdName {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    sentQuantity?: number;
+    receivedQuantity?: number;
+    stockAmount?: number;
+    sourceWareHouseId?: number;
+    sourceWareHouse?: WareHouse | undefined;
+    destinationWareHouseId?: number;
+    destinationWareHouse?: WareHouse | undefined;
+}
+
+export class TransferDto extends Transfer implements ITransferDto {
+    statusName?: string | undefined;
+    quantityStatusName?: string | undefined;
+    sourceWareHouseName?: string | undefined;
+    destinationWareHouseName?: string | undefined;
+
+    constructor(data?: ITransferDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.statusName = _data["statusName"];
+            this.quantityStatusName = _data["quantityStatusName"];
+            this.sourceWareHouseName = _data["sourceWareHouseName"];
+            this.destinationWareHouseName = _data["destinationWareHouseName"];
+        }
+    }
+
+    static fromJS(data: any): TransferDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TransferDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusName"] = this.statusName;
+        data["quantityStatusName"] = this.quantityStatusName;
+        data["sourceWareHouseName"] = this.sourceWareHouseName;
+        data["destinationWareHouseName"] = this.destinationWareHouseName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITransferDto extends ITransfer {
+    statusName?: string | undefined;
+    quantityStatusName?: string | undefined;
+    sourceWareHouseName?: string | undefined;
+    destinationWareHouseName?: string | undefined;
 }
 
 export interface FileResponse {

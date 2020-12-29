@@ -56,14 +56,7 @@ namespace TIMSBack.Infrastructure.Services
                 });
 
 
-                //using (var client = new SmtpClient())
-                //{
-                //    await client.ConnectAsync(GlobalVariables.Host, 587, true);
-                //    await client.AuthenticateAsync(GlobalVariables.UserName, GlobalVariables.Password);
-                //    await client.SendAsync(emailMessage);
-
-                //    await client.DisconnectAsync(true);
-                //}
+               
             }
             catch (Exception e)
             {

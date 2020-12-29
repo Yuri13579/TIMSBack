@@ -12,7 +12,10 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TIMSBack.Domain;
 using TIMSBack.Domain.Entities.Auth;
+using TIMSBack.Domain.Entities.Inventory;
+using TIMSBack.Domain.Entities.Manufacturing;
 
 namespace TIMSBack.Infrastructure.Persistence
 {
@@ -51,9 +54,11 @@ namespace TIMSBack.Infrastructure.Persistence
         
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CategoryCustomer> CategoryCustomers { get; set; }
+        public DbSet<CategorySupplier> CategorySuppliers { get; set; }
         public DbSet<PriceTier> PriceTiers { get; set; }
         public DbSet<TermsOfPayment> TermsOfPayments { get; set; }
         public DbSet<CustomerPaymentHistory> CustomerPaymentHistories { get; set; }
+        public DbSet<SupplierPaymentHistory> SupplierPaymentHistories { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Status>  Statuses { get; set; }
         public DbSet<QuantityStatus> QuantityStatuses { get; set; }
@@ -61,8 +66,11 @@ namespace TIMSBack.Infrastructure.Persistence
         public DbSet<PaymentStatus> PaymentStatuses { get;  set; }
         public DbSet<WareHouse> WareHouses { get;  set; }
         public DbSet<SalesOrder> SalesOrders { get; set; }
-      //  public DbSet<UserModel> Users { get; set; }
-        
+        public DbSet<Supplier> Suppliers { get; set; }
+
+        public DbSet<WorkOrder> WorkOrders { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
+
 
         //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         //{

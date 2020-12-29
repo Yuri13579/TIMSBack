@@ -10,9 +10,7 @@ namespace TIMSBack.Application.ProductLists.Queries.GetProducts
         {
             Items = new List<Product>();
         }
-
-  
-
+        
         public string Name { get; set; }
 
         public IList<Product> Items { get; set; }

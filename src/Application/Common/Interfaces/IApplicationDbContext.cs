@@ -3,7 +3,10 @@ using TIMSBack.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using TIMSBack.Domain;
 using TIMSBack.Domain.Entities.Auth;
+using TIMSBack.Domain.Entities.Inventory;
+using TIMSBack.Domain.Entities.Manufacturing;
 
 namespace TIMSBack.Application.Common.Interfaces
 {
@@ -25,10 +28,14 @@ namespace TIMSBack.Application.Common.Interfaces
         DbSet<Trademark> Trademarks { get; set; }
 
         DbSet<Domain.Entities.Customer> Customers { get; set; }
+        DbSet<Domain.Entities.Supplier> Suppliers { get; set; }
         DbSet<CategoryCustomer> CategoryCustomers { get; set; }
+        DbSet<CategorySupplier> CategorySuppliers { get; set; }
+
         DbSet<PriceTier> PriceTiers { get; set; }
         DbSet<TermsOfPayment> TermsOfPayments { get; set; }
         DbSet<CustomerPaymentHistory> CustomerPaymentHistories { get; set; }
+        DbSet<SupplierPaymentHistory> SupplierPaymentHistories { get; set; }
         DbSet<Country> Countries { get; set; }
        
          DbSet<Status> Statuses { get; set; }
@@ -37,8 +44,9 @@ namespace TIMSBack.Application.Common.Interfaces
          DbSet<PaymentStatus> PaymentStatuses { get;  set; }
          DbSet<WareHouse> WareHouses { get;  set; }
          DbSet<Domain.Entities.SalesOrder> SalesOrders { get; set; }
-        // DbSet<UserModel> Users { get; set; }
-        
+         DbSet<WorkOrder> WorkOrders { get; set; }
+         DbSet<Transfer> Transfers { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

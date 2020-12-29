@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Common\Mappings\" />
     <Folder Include="ProductLists\Commands\" />
+    <Folder Include="ProductsAndServices\Queries\" />
   </ItemGroup>
 
 </Project>

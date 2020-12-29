@@ -17,6 +17,10 @@ namespace TIMSBack.Infrastructure.Persistence.Configurations
                 .WithOne(x => x.TermsOfPayment)
                 .HasForeignKey(z => z.TermsOfPaymentId);
 
+            builder.HasMany(e => e.Suppliers)
+                .WithOne(x => x.TermsOfPayment)
+                .HasForeignKey(z => z.TermsOfPaymentId);
+
             builder.Property(e => e.Name).HasMaxLength(50);
 
         }

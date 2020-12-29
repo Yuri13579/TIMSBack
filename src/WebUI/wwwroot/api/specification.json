@@ -267,6 +267,29 @@
         }
       }
     },
+    "/api/PurchaseOrderLists": {
+      "get": {
+        "tags": [
+          "PurchaseOrderLists"
+        ],
+        "operationId": "PurchaseOrderLists_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PurchasesOrderListDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/SalesOrderLists": {
       "get": {
         "tags": [
@@ -282,6 +305,29 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/SalesOrderListDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Supplier": {
+      "get": {
+        "tags": [
+          "Supplier"
+        ],
+        "operationId": "Supplier_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupplierDto"
                   }
                 }
               }
@@ -753,14 +799,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": [
-              "Admin"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/Users/{id}": {
@@ -793,12 +832,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/WeatherForecast": {
@@ -816,6 +850,75 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WorkOrder": {
+      "get": {
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "WorkOrder_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkOrderDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ProductsAndServices": {
+      "get": {
+        "tags": [
+          "ProductsAndServices"
+        ],
+        "operationId": "ProductsAndServices_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductsAndServicesDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Transfer": {
+      "get": {
+        "tags": [
+          "Transfer"
+        ],
+        "operationId": "Transfer_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransferDto"
                   }
                 }
               }
@@ -1207,6 +1310,27 @@
               "onHandCount": {
                 "type": "integer",
                 "format": "int32"
+              },
+              "reservedQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "commitedQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "awaitingQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "wareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "documentId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
               }
             }
           }
@@ -1489,6 +1613,98 @@
           }
         }
       },
+      "PurchasesOrderListDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tag": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "supplierId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "supplierName": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantityStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantityStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "amountTaxIncl": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "unpaidAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "advancePayment": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "wareHouseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wareHouseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cash": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "creditCard": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
       "SalesOrderListDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1580,6 +1796,63 @@
             "nullable": true
           }
         }
+      },
+      "SupplierDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "city": {
+                "type": "string",
+                "nullable": true
+              },
+              "country": {
+                "type": "string",
+                "nullable": true
+              },
+              "categorySupplierId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "categorySupplier": {
+                "type": "string",
+                "nullable": true
+              },
+              "taxLocation": {
+                "type": "string",
+                "nullable": true
+              },
+              "termsOfPaymentId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "termsOfPayment": {
+                "type": "string",
+                "nullable": true
+              },
+              "theyOwnYou": {
+                "type": "number",
+                "format": "double"
+              },
+              "youOwnThem": {
+                "type": "number",
+                "format": "double"
+              },
+              "balance": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
       },
       "CreateTodoItemCommand": {
         "type": "object",
@@ -1821,6 +2094,342 @@
             "nullable": true
           }
         }
+      },
+      "WorkOrderDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkOrder"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "statusName": {
+                "type": "string",
+                "nullable": true
+              },
+              "quantityStatusName": {
+                "type": "string",
+                "nullable": true
+              },
+              "inputWareHouseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "outWareHouseName": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "WorkOrder": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "statusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "status": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Status"
+                  }
+                ]
+              },
+              "quantityStatusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "quantityStatus": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/QuantityStatus"
+                  }
+                ]
+              },
+              "materialLoading": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "finishedGood": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "estimatedCost": {
+                "type": "number",
+                "format": "double"
+              },
+              "inputWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "inputWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              },
+              "outWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "outWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Status": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "QuantityStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "WareHouse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ProductsAndServicesDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "grossWeight": {
+            "type": "number",
+            "format": "double"
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "barcode": {
+            "type": "number",
+            "format": "double"
+          },
+          "mpe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "trademark": {
+            "type": "string",
+            "nullable": true
+          },
+          "onHand": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "trademarkId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reservedQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commitedQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "awaitingQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wareHouseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wareHouseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "TransferDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Transfer"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "statusName": {
+                "type": "string",
+                "nullable": true
+              },
+              "quantityStatusName": {
+                "type": "string",
+                "nullable": true
+              },
+              "sourceWareHouseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "destinationWareHouseName": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "Transfer": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "statusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "status": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Status"
+                  }
+                ]
+              },
+              "quantityStatusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "quantityStatus": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/QuantityStatus"
+                  }
+                ]
+              },
+              "sentQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "receivedQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "stockAmount": {
+                "type": "number",
+                "format": "double"
+              },
+              "sourceWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "sourceWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              },
+              "destinationWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "destinationWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {

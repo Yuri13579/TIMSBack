@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIMSBack.Application.Login;
 using TIMSBack.Domain.Entities;
 using TIMSBack.Domain.Entities.Auth;
+using TIMSBack.Infrastructure.Identity;
 
 namespace TIMSBack.WebUI.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ApiController
@@ -48,7 +50,7 @@ namespace TIMSBack.WebUI.Controllers
         }
 
 
-        [Authorize(Roles = Role.Admin)]
+       // [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public IActionResult GetAll()
         {

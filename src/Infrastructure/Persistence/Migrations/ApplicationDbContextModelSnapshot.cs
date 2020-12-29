@@ -268,6 +268,22 @@ namespace TIMSBack.Infrastructure.Persistence.Migrations
                     b.ToTable("CategoryCustomers");
                 });
 
+            modelBuilder.Entity("TIMSBack.Domain.Entities.CategorySupplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategorySuppliers");
+                });
+
             modelBuilder.Entity("TIMSBack.Domain.Entities.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -680,6 +696,76 @@ namespace TIMSBack.Infrastructure.Persistence.Migrations
                     b.ToTable("Statuses");
                 });
 
+            modelBuilder.Entity("TIMSBack.Domain.Entities.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategorySupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TaxLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TermsOfPaymentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategorySupplierId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("TermsOfPaymentId");
+
+                    b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("TIMSBack.Domain.Entities.SupplierPaymentHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TheyOwnYou")
+                        .HasColumnType("float");
+
+                    b.Property<double>("YouOwnThem")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("SupplierPaymentHistories");
+                });
+
             modelBuilder.Entity("TIMSBack.Domain.Entities.TermsOfPayment", b =>
                 {
                     b.Property<int>("Id")
@@ -1043,6 +1129,36 @@ namespace TIMSBack.Infrastructure.Persistence.Migrations
                     b.HasOne("TIMSBack.Domain.Entities.WareHouse", "WareHouse")
                         .WithMany()
                         .HasForeignKey("WareHouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TIMSBack.Domain.Entities.Supplier", b =>
+                {
+                    b.HasOne("TIMSBack.Domain.Entities.CategorySupplier", "CategorySupplier")
+                        .WithMany("Suppliers")
+                        .HasForeignKey("CategorySupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TIMSBack.Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TIMSBack.Domain.Entities.TermsOfPayment", "TermsOfPayment")
+                        .WithMany("Suppliers")
+                        .HasForeignKey("TermsOfPaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TIMSBack.Domain.Entities.SupplierPaymentHistory", b =>
+                {
+                    b.HasOne("TIMSBack.Domain.Entities.Supplier", "Supplier")
+                        .WithMany("SupplierPaymentHistories")
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
