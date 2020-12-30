@@ -2177,25 +2177,9 @@
                 "type": "integer",
                 "format": "int32"
               },
-              "inputWareHouse": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/WareHouse"
-                  }
-                ]
-              },
               "outWareHouseId": {
                 "type": "integer",
                 "format": "int32"
-              },
-              "outWareHouse": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/WareHouse"
-                  }
-                ]
               }
             }
           }
@@ -2208,7 +2192,93 @@
           },
           {
             "type": "object",
-            "additionalProperties": false
+            "additionalProperties": false,
+            "properties": {
+              "transfers": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Transfer"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Transfer": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseIdName"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "statusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "status": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Status"
+                  }
+                ]
+              },
+              "quantityStatusId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "quantityStatus": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/QuantityStatus"
+                  }
+                ]
+              },
+              "sentQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "receivedQuantity": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "stockAmount": {
+                "type": "number",
+                "format": "double"
+              },
+              "sourceWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "sourceWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              },
+              "destinationWareHouseId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "destinationWareHouse": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WareHouse"
+                  }
+                ]
+              }
+            }
           }
         ]
       },
@@ -2219,7 +2289,16 @@
           },
           {
             "type": "object",
-            "additionalProperties": false
+            "additionalProperties": false,
+            "properties": {
+              "transfers": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Transfer"
+                }
+              }
+            }
           }
         ]
       },
@@ -2230,7 +2309,23 @@
           },
           {
             "type": "object",
-            "additionalProperties": false
+            "additionalProperties": false,
+            "properties": {
+              "sourceWareHouses": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Transfer"
+                }
+              },
+              "destinationWareHouses": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Transfer"
+                }
+              }
+            }
           }
         ]
       },
@@ -2349,83 +2444,6 @@
               "destinationWareHouseName": {
                 "type": "string",
                 "nullable": true
-              }
-            }
-          }
-        ]
-      },
-      "Transfer": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseIdName"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "date": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "statusId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "status": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Status"
-                  }
-                ]
-              },
-              "quantityStatusId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "quantityStatus": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/QuantityStatus"
-                  }
-                ]
-              },
-              "sentQuantity": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "receivedQuantity": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "stockAmount": {
-                "type": "number",
-                "format": "double"
-              },
-              "sourceWareHouseId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "sourceWareHouse": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/WareHouse"
-                  }
-                ]
-              },
-              "destinationWareHouseId": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "destinationWareHouse": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/WareHouse"
-                  }
-                ]
               }
             }
           }

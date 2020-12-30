@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace TIMSBack.Domain.Entities.Inventory
@@ -16,9 +17,9 @@ namespace TIMSBack.Domain.Entities.Inventory
         public int ReceivedQuantity { get; set; }
         public double StockAmount { get; set; }
         public int SourceWareHouseId { get; set; }
-        public WareHouse SourceWareHouse { get; set; }
+        public virtual WareHouse SourceWareHouse { get; set; }
         public int DestinationWareHouseId { get; set; }
-        public WareHouse DestinationWareHouse { get; set; }
+        public virtual WareHouse DestinationWareHouse { get; set; }
     }
 
 }

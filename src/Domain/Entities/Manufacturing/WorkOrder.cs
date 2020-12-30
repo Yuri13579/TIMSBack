@@ -16,8 +16,8 @@ namespace TIMSBack.Domain.Entities.Manufacturing
         public double EstimatedCost { get; set; }
 
         public int InputWareHouseId { get; set; }
-        public WareHouse InputWareHouse { get; set; }
+       // public WareHouse InputWareHouse { get; set; }
         public int OutWareHouseId { get; set; }
-        public WareHouse OutWareHouse { get; set; }
+       // public WareHouse OutWareHouse { get; set; }
     }
 }

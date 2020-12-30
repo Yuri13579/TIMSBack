@@ -3810,9 +3810,7 @@ export class WorkOrder extends BaseIdName implements IWorkOrder {
     finishedGood?: number;
     estimatedCost?: number;
     inputWareHouseId?: number;
-    inputWareHouse?: WareHouse | undefined;
     outWareHouseId?: number;
-    outWareHouse?: WareHouse | undefined;
 
     constructor(data?: IWorkOrder) {
         super(data);
@@ -3830,9 +3828,7 @@ export class WorkOrder extends BaseIdName implements IWorkOrder {
             this.finishedGood = _data["finishedGood"];
             this.estimatedCost = _data["estimatedCost"];
             this.inputWareHouseId = _data["inputWareHouseId"];
-            this.inputWareHouse = _data["inputWareHouse"] ? WareHouse.fromJS(_data["inputWareHouse"]) : <any>undefined;
             this.outWareHouseId = _data["outWareHouseId"];
-            this.outWareHouse = _data["outWareHouse"] ? WareHouse.fromJS(_data["outWareHouse"]) : <any>undefined;
         }
     }
 
@@ -3854,9 +3850,7 @@ export class WorkOrder extends BaseIdName implements IWorkOrder {
         data["finishedGood"] = this.finishedGood;
         data["estimatedCost"] = this.estimatedCost;
         data["inputWareHouseId"] = this.inputWareHouseId;
-        data["inputWareHouse"] = this.inputWareHouse ? this.inputWareHouse.toJSON() : <any>undefined;
         data["outWareHouseId"] = this.outWareHouseId;
-        data["outWareHouse"] = this.outWareHouse ? this.outWareHouse.toJSON() : <any>undefined;
         super.toJSON(data);
         return data; 
     }
@@ -3872,9 +3866,7 @@ export interface IWorkOrder extends IBaseIdName {
     finishedGood?: number;
     estimatedCost?: number;
     inputWareHouseId?: number;
-    inputWareHouse?: WareHouse | undefined;
     outWareHouseId?: number;
-    outWareHouse?: WareHouse | undefined;
 }
 
 export class WorkOrderDto extends WorkOrder implements IWorkOrderDto {
@@ -3923,6 +3915,7 @@ export interface IWorkOrderDto extends IWorkOrder {
 }
 
 export class Status extends BaseIdName implements IStatus {
+    transfers?: Transfer[] | undefined;
 
     constructor(data?: IStatus) {
         super(data);
@@ -3930,6 +3923,13 @@ export class Status extends BaseIdName implements IStatus {
 
     init(_data?: any) {
         super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["transfers"])) {
+                this.transfers = [] as any;
+                for (let item of _data["transfers"])
+                    this.transfers!.push(Transfer.fromJS(item));
+            }
+        }
     }
 
     static fromJS(data: any): Status {
@@ -3941,15 +3941,99 @@ export class Status extends BaseIdName implements IStatus {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.transfers)) {
+            data["transfers"] = [];
+            for (let item of this.transfers)
+                data["transfers"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
 }
 
 export interface IStatus extends IBaseIdName {
+    transfers?: Transfer[] | undefined;
+}
+
+export class Transfer extends BaseIdName implements ITransfer {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    sentQuantity?: number;
+    receivedQuantity?: number;
+    stockAmount?: number;
+    sourceWareHouseId?: number;
+    sourceWareHouse?: WareHouse | undefined;
+    destinationWareHouseId?: number;
+    destinationWareHouse?: WareHouse | undefined;
+
+    constructor(data?: ITransfer) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.status = _data["status"] ? Status.fromJS(_data["status"]) : <any>undefined;
+            this.quantityStatusId = _data["quantityStatusId"];
+            this.quantityStatus = _data["quantityStatus"] ? QuantityStatus.fromJS(_data["quantityStatus"]) : <any>undefined;
+            this.sentQuantity = _data["sentQuantity"];
+            this.receivedQuantity = _data["receivedQuantity"];
+            this.stockAmount = _data["stockAmount"];
+            this.sourceWareHouseId = _data["sourceWareHouseId"];
+            this.sourceWareHouse = _data["sourceWareHouse"] ? WareHouse.fromJS(_data["sourceWareHouse"]) : <any>undefined;
+            this.destinationWareHouseId = _data["destinationWareHouseId"];
+            this.destinationWareHouse = _data["destinationWareHouse"] ? WareHouse.fromJS(_data["destinationWareHouse"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Transfer {
+        data = typeof data === 'object' ? data : {};
+        let result = new Transfer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["status"] = this.status ? this.status.toJSON() : <any>undefined;
+        data["quantityStatusId"] = this.quantityStatusId;
+        data["quantityStatus"] = this.quantityStatus ? this.quantityStatus.toJSON() : <any>undefined;
+        data["sentQuantity"] = this.sentQuantity;
+        data["receivedQuantity"] = this.receivedQuantity;
+        data["stockAmount"] = this.stockAmount;
+        data["sourceWareHouseId"] = this.sourceWareHouseId;
+        data["sourceWareHouse"] = this.sourceWareHouse ? this.sourceWareHouse.toJSON() : <any>undefined;
+        data["destinationWareHouseId"] = this.destinationWareHouseId;
+        data["destinationWareHouse"] = this.destinationWareHouse ? this.destinationWareHouse.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITransfer extends IBaseIdName {
+    date?: Date;
+    statusId?: number;
+    status?: Status | undefined;
+    quantityStatusId?: number;
+    quantityStatus?: QuantityStatus | undefined;
+    sentQuantity?: number;
+    receivedQuantity?: number;
+    stockAmount?: number;
+    sourceWareHouseId?: number;
+    sourceWareHouse?: WareHouse | undefined;
+    destinationWareHouseId?: number;
+    destinationWareHouse?: WareHouse | undefined;
 }
 
 export class QuantityStatus extends BaseIdName implements IQuantityStatus {
+    transfers?: Transfer[] | undefined;
 
     constructor(data?: IQuantityStatus) {
         super(data);
@@ -3957,6 +4041,13 @@ export class QuantityStatus extends BaseIdName implements IQuantityStatus {
 
     init(_data?: any) {
         super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["transfers"])) {
+                this.transfers = [] as any;
+                for (let item of _data["transfers"])
+                    this.transfers!.push(Transfer.fromJS(item));
+            }
+        }
     }
 
     static fromJS(data: any): QuantityStatus {
@@ -3968,15 +4059,23 @@ export class QuantityStatus extends BaseIdName implements IQuantityStatus {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.transfers)) {
+            data["transfers"] = [];
+            for (let item of this.transfers)
+                data["transfers"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
 }
 
 export interface IQuantityStatus extends IBaseIdName {
+    transfers?: Transfer[] | undefined;
 }
 
 export class WareHouse extends BaseIdName implements IWareHouse {
+    sourceWareHouses?: Transfer[] | undefined;
+    destinationWareHouses?: Transfer[] | undefined;
 
     constructor(data?: IWareHouse) {
         super(data);
@@ -3984,6 +4083,18 @@ export class WareHouse extends BaseIdName implements IWareHouse {
 
     init(_data?: any) {
         super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["sourceWareHouses"])) {
+                this.sourceWareHouses = [] as any;
+                for (let item of _data["sourceWareHouses"])
+                    this.sourceWareHouses!.push(Transfer.fromJS(item));
+            }
+            if (Array.isArray(_data["destinationWareHouses"])) {
+                this.destinationWareHouses = [] as any;
+                for (let item of _data["destinationWareHouses"])
+                    this.destinationWareHouses!.push(Transfer.fromJS(item));
+            }
+        }
     }
 
     static fromJS(data: any): WareHouse {
@@ -3995,12 +4106,24 @@ export class WareHouse extends BaseIdName implements IWareHouse {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.sourceWareHouses)) {
+            data["sourceWareHouses"] = [];
+            for (let item of this.sourceWareHouses)
+                data["sourceWareHouses"].push(item.toJSON());
+        }
+        if (Array.isArray(this.destinationWareHouses)) {
+            data["destinationWareHouses"] = [];
+            for (let item of this.destinationWareHouses)
+                data["destinationWareHouses"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
 }
 
 export interface IWareHouse extends IBaseIdName {
+    sourceWareHouses?: Transfer[] | undefined;
+    destinationWareHouses?: Transfer[] | undefined;
 }
 
 export class ProductsAndServicesDto implements IProductsAndServicesDto {
@@ -4117,83 +4240,6 @@ export interface IProductsAndServicesDto {
     wareHouseId?: number;
     wareHouseName?: string | undefined;
     documentId?: number | undefined;
-}
-
-export class Transfer extends BaseIdName implements ITransfer {
-    date?: Date;
-    statusId?: number;
-    status?: Status | undefined;
-    quantityStatusId?: number;
-    quantityStatus?: QuantityStatus | undefined;
-    sentQuantity?: number;
-    receivedQuantity?: number;
-    stockAmount?: number;
-    sourceWareHouseId?: number;
-    sourceWareHouse?: WareHouse | undefined;
-    destinationWareHouseId?: number;
-    destinationWareHouse?: WareHouse | undefined;
-
-    constructor(data?: ITransfer) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.statusId = _data["statusId"];
-            this.status = _data["status"] ? Status.fromJS(_data["status"]) : <any>undefined;
-            this.quantityStatusId = _data["quantityStatusId"];
-            this.quantityStatus = _data["quantityStatus"] ? QuantityStatus.fromJS(_data["quantityStatus"]) : <any>undefined;
-            this.sentQuantity = _data["sentQuantity"];
-            this.receivedQuantity = _data["receivedQuantity"];
-            this.stockAmount = _data["stockAmount"];
-            this.sourceWareHouseId = _data["sourceWareHouseId"];
-            this.sourceWareHouse = _data["sourceWareHouse"] ? WareHouse.fromJS(_data["sourceWareHouse"]) : <any>undefined;
-            this.destinationWareHouseId = _data["destinationWareHouseId"];
-            this.destinationWareHouse = _data["destinationWareHouse"] ? WareHouse.fromJS(_data["destinationWareHouse"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Transfer {
-        data = typeof data === 'object' ? data : {};
-        let result = new Transfer();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
-        data["statusId"] = this.statusId;
-        data["status"] = this.status ? this.status.toJSON() : <any>undefined;
-        data["quantityStatusId"] = this.quantityStatusId;
-        data["quantityStatus"] = this.quantityStatus ? this.quantityStatus.toJSON() : <any>undefined;
-        data["sentQuantity"] = this.sentQuantity;
-        data["receivedQuantity"] = this.receivedQuantity;
-        data["stockAmount"] = this.stockAmount;
-        data["sourceWareHouseId"] = this.sourceWareHouseId;
-        data["sourceWareHouse"] = this.sourceWareHouse ? this.sourceWareHouse.toJSON() : <any>undefined;
-        data["destinationWareHouseId"] = this.destinationWareHouseId;
-        data["destinationWareHouse"] = this.destinationWareHouse ? this.destinationWareHouse.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITransfer extends IBaseIdName {
-    date?: Date;
-    statusId?: number;
-    status?: Status | undefined;
-    quantityStatusId?: number;
-    quantityStatus?: QuantityStatus | undefined;
-    sentQuantity?: number;
-    receivedQuantity?: number;
-    stockAmount?: number;
-    sourceWareHouseId?: number;
-    sourceWareHouse?: WareHouse | undefined;
-    destinationWareHouseId?: number;
-    destinationWareHouse?: WareHouse | undefined;
 }
 
 export class TransferDto extends Transfer implements ITransferDto {

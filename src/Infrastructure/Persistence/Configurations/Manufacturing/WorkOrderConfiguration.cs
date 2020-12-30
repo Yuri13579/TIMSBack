@@ -16,6 +16,7 @@ namespace TIMSBack.Infrastructure.Persistence.Configurations.Manufacturing
             
             builder.Property(e => e.Name).HasMaxLength(50);
 
+            
         }
     }
 

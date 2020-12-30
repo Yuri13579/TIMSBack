@@ -33,8 +33,8 @@ namespace TIMSBack.Application.Inventory.Transfer.Queries
                 from transfers in _context.Transfers
                 join status in _context.Statuses on transfers.StatusId equals status.Id
                 join quantityStatusNames in _context.QuantityStatuses on transfers.QuantityStatusId equals quantityStatusNames.Id
-                join sourceWareHouses in _context.WareHouses on transfers.SourceWareHouseId equals sourceWareHouses.Id
-                join destinationWareHouses in _context.WareHouses on transfers.DestinationWareHouseId equals destinationWareHouses.Id
+                //join sourceWareHouses in _context.WareHouses on transfers.SourceWareHouseId equals sourceWareHouses.Id
+                //join destinationWareHouses in _context.WareHouses on transfers.DestinationWareHouseId equals destinationWareHouses.Id
 
                 select new TransferDto
                 {
@@ -45,8 +45,8 @@ namespace TIMSBack.Application.Inventory.Transfer.Queries
                     Date = transfers.Date,
                     StockAmount = transfers.StockAmount,
                     SentQuantity = transfers.SentQuantity,
-                    SourceWareHouseName = sourceWareHouses.Name,
-                    DestinationWareHouseName = destinationWareHouses.Name,
+                  //  SourceWareHouseName = sourceWareHouses.Name,
+                  //  DestinationWareHouseName = destinationWareHouses.Name,
                     ReceivedQuantity = transfers.ReceivedQuantity
 
                 }).ToList();

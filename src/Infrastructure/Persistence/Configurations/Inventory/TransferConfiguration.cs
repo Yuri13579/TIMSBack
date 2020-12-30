@@ -16,6 +16,26 @@ namespace TIMSBack.Infrastructure.Persistence.Configurations.Inventory
 
             builder.Property(e => e.Name).HasMaxLength(50);
 
+            builder.HasOne(x => x.Status)
+                .WithMany(y => y.Transfers)
+                .HasForeignKey(z => z.StatusId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.QuantityStatus)
+                .WithMany(y => y.Transfers)
+                .HasForeignKey(z => z.QuantityStatusId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.DestinationWareHouse)
+                .WithMany(y => y.DestinationWareHouses)
+                .HasForeignKey(z => z.DestinationWareHouseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.SourceWareHouse)
+                .WithMany(y => y.SourceWareHouses)
+                .HasForeignKey(z => z.SourceWareHouseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }
