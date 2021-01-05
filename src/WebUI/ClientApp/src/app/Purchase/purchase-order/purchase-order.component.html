@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Id</th>
+    <th scope="col">tag</th>
+    <th scope="col">date</th>
+    <th scope="col">supplier Name</th>
+    <th scope="col">status Name</th>
+    <th scope="col">quantityStatus Name</th>
+    <th scope="col">paymentStatus Name</th>
+    <th scope="col">amount</th>
+    <th scope="col">wareHouse Name</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let purchasesOrder of purchaseOrders">
+    <td>{{ purchasesOrder.id}}</td>
+    <td>{{ purchasesOrder.tag}}</td>
+    <td>{{ purchasesOrder.date }}</td>
+    <td>{{ purchasesOrder.supplierName}}</td>
+    <td>{{ purchasesOrder.statusName}}</td>
+    <td>{{ purchasesOrder.quantityStatusName}}</td>
+    <td>{{ purchasesOrder.paymentStatusName }}</td>
+    <td>{{ purchasesOrder.amount }}</td>
+    <td>{{ purchasesOrder.wareHouseName}}</td>
+  </tr>
+  </tbody>
+</table>
+
+

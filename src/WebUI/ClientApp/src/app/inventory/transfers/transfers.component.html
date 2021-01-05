@@ -1,0 +1,34 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Id</th>
+    <th scope="col">date</th>
+    <th scope="col">Name</th>
+
+    <th scope="col">statusName</th>
+    <th scope="col">quantityStatusName</th>
+    <th scope="col">sourceWareHouseName</th>
+    <th scope="col">destinationWareHouseName</th>
+    <th scope="col">stockAmount</th>
+    <th scope="col">sentQuantity</th>
+    <th scope="col">receivedQuantity</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let transfer of transfers">
+    <td>{{ transfer.id}}</td>
+    <td>{{ transfer.date }}</td>
+    <td>{{ transfer.name}}</td>
+
+    <td>{{ transfer.statusName }}</td>
+    <td>{{ transfer.quantityStatusName}}</td>
+    <td>{{ transfer.sourceWareHouseName}}</td>
+    <td>{{ transfer.destinationWareHouseName}}</td>
+    <td>{{ transfer.stockAmount}}</td>
+    <td>{{ transfer.sentQuantity}}</td>
+    <td>{{ transfer.receivedQuantity}}</td>
+  </tr>
+  </tbody>
+</table>
+
+

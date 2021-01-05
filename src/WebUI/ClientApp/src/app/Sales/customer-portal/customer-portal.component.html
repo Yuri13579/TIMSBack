@@ -1,0 +1,112 @@
+
+
+<div class="content" >
+  <div class="row">
+
+
+  <!-- <div class="row justify-content-start">
+    <div class="col-4"> -->
+  <mat-form-field appearance="fill">
+    <!-- <mat-label>trademarks</mat-label> -->
+    <mat-select placeholder="State" [formControl]="trademarks"  multiple  (selectionChange)="getSelectedProductFilterTrademark()">
+      <!-- $event.value -->
+         <mat-option *ngFor="let trademark of trademarkList" [value]="trademark.trademarkId">
+           {{trademark.trademarkId}} {{trademark.trademarkName}}
+          </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- </div>
+  <div class="col-4"> -->
+    <mat-form-field appearance="fill">
+      <!-- <mat-label>trademarks</mat-label> -->
+      <mat-select placeholder="State" [formControl]="categories"  multiple  (selectionChange)="getSelectedProductFilterTrademark()">
+        <!-- $event.value -->
+           <mat-option *ngFor="let category of categoriesList" [value]="category.categoryId">
+             {{category.categoryId}} {{category.categoryName}}
+            </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- </div>
+</div> -->
+
+<!-- <div class="row justify-content-center">
+  <div class="col-4"> -->
+  <mat-card  *ngFor="let product of products">
+    <img mat-card-image src="{{product.photo}}" >
+    <mat-card-title>{{ product.productName }}</mat-card-title>
+    <mat-card-content>
+      <p>
+        ₴ {{ product.price }} <br>
+        {{ product.onHand }}  {{ product.unit }} <br>
+        category {{ product.category }} <br>
+       Brand  {{ product.trademark }} <br>
+       sku/barcode  {{ product.sku }}/ {{ product.barcode }} <br>
+       {{ product.grossWeight }} kg
+    </p>
+    </mat-card-content>
+  </mat-card>
+  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+<!-- </div>
+</div>
+</div>-->
+<!-- <br><button type="button" class="btn btn-outline-primary" (click)="getAllProduct()">searsch AllProduct</button>
+ -->
+
+
+
+
+
+
+
+        <!-- Code by pagination -->
+
+        <!-- <div class="container mw-100">
+          <div class="row">
+            <div class="col-md-3"> </div> -->
+         <!--  <div *ngIf="companies !=0" class="col-md-6">-->
+          <mat-nav-list *ngFor="let number of arrayNumber" class="list-horizontal">
+            <a  mat-list-item (click)="getSelectedProduct(number)">{{number}}    </a>
+          </mat-nav-list>
+            <!-- <ul class="list-group list-group-horizontal">
+                <li *ngFor="let number of arrayNumber" class="list-group-item">
+                  <a (click)="getSelectedProduct(number)" >{{number}}</a>
+                </li>
+              </ul> -->
+              <!-- <div style="text-align: center;">
+                Page  Page {{currentPage}} of Total page {{paginationService.exactPageList}} -->
+             <!-- </div>
+            </div>
+          </div> -->
+        </div>
+
+        </div>
+
+
+
+
+
+
+<!-- <table class="table table-striped">
+  <thead class="thead-dark">
+    <tr class="table-primary">
+      <td scope="col">productId</td>
+      <td scope="col">productName</td>
+      <td scope="col">category</td>
+      <td scope="col">photo</td>
+      <td scope="col">barcode</td>
+      <td scope="col">onHand</td>
+      <td scope="col">price</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+        <td>{{ product.productId }} </td>
+      <td>{{ product.productName }}</td>
+      <td>{{ product.category }}</td>
+      <td><img [src]="product.photo" height="50"/></td>
+      <td>{{ product.barcode}}</td>
+      <td>{{ product.onHand}}</td>
+      <td>{{ product.price}}</td>
+    </tr>
+    <tbody>
+  </table> -->

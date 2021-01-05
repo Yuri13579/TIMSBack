@@ -1,0 +1,40 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">productId</th>
+    <th scope="col">photo</th>
+    <th scope="col">productName</th>
+
+    <th scope="col">onHand </th>
+    <th scope="col">reservedQuantity </th>
+    <th scope="col">commitedQuantity </th>
+    <th scope="col">awaitingQuantity </th>
+ <th scope="col">category </th>
+    <th scope="col">trademark </th>
+    <th scope="col">price </th>
+     <th scope="col">sku </th>
+    <th scope="col">unit </th>
+       <th scope="col">wareHouseName </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let product of products">
+    <td>{{ product.productId}}</td>
+    <td> <img  src="{{ product.photo }}" > </td>
+    <td>{{ product.productName}}</td>
+
+    <td>{{ product.onHand}}</td>
+    <td>{{ product.reservedQuantity}}</td>
+    <td>{{ product.commitedQuantity}}</td>
+    <td>{{ product.awaitingQuantity}}</td>
+     <td>{{ product.category}}</td>
+    <td>{{ product.trademark}}</td>
+    <td>{{ product.price}}</td>
+   <td>{{ product.sku}}</td>
+    <td>{{ product.unit}}</td>
+   <td>{{ product.wareHouseName}}</td>
+
+  </tr>
+  </tbody>
+</table>

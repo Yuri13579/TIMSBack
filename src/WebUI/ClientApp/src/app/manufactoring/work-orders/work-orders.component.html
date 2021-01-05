@@ -1,0 +1,33 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Id</th>
+    <th scope="col">date</th>
+    <th scope="col">Name</th>
+
+    <th scope="col">statusName</th>
+    <th scope="col">quantityStatusName</th>
+    <th scope="col">inputWareHouseName</th>
+    <th scope="col">outWareHouseName</th>
+    <th scope="col">estimatedCost</th>
+    <th scope="col">materialLoading</th>
+    <th scope="col">finishedGood</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let workOrder of workOrders">
+    <td>{{ workOrder.id}}</td>
+    <td>{{ workOrder.date }}</td>
+    <td>{{ workOrder.name}}</td>
+
+    <td>{{ workOrder.statusName }}</td>
+    <td>{{ workOrder.quantityStatusName}}</td>
+    <td>{{ workOrder.inputWareHouseName}}</td>
+    <td>{{ workOrder.outWareHouseName }}</td>
+    <td>{{ workOrder.estimatedCost }}</td>
+    <td>{{ workOrder.materialLoading}}</td>
+    <td>{{ workOrder.finishedGood}}</td>
+  </tr>
+  </tbody>
+</table>
+
