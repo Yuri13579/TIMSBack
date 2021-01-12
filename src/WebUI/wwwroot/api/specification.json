@@ -2214,7 +2214,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "date": {
+              "dateTime": {
                 "type": "string",
                 "format": "date-time"
               },
@@ -2442,6 +2442,10 @@
                 "nullable": true
               },
               "destinationWareHouseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "date": {
                 "type": "string",
                 "nullable": true
               }

@@ -7,7 +7,7 @@ namespace TIMSBack.Domain.Entities.Inventory
 {
     public class Transfer : BaseIdName
     {
-        public DateTime Date { get; set; }
+        public DateTime DateTime { get; set; }
         public int StatusId { get; set; }
         public Status Status { get; set; }
         public int QuantityStatusId { get; set; }

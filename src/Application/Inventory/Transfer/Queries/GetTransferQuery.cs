@@ -42,7 +42,7 @@ namespace TIMSBack.Application.Inventory.Transfer.Queries
                     Name = transfers.Name,
                     StatusName = status.Name,
                     QuantityStatusName = quantityStatusNames.Name,
-                    Date = transfers.Date,
+                    Date = transfers.DateTime.ToString("dd'/'MM'/'yyyy"),
                     StockAmount = transfers.StockAmount,
                     SentQuantity = transfers.SentQuantity,
                   //  SourceWareHouseName = sourceWareHouses.Name,

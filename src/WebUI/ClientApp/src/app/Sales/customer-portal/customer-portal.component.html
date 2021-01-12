@@ -1,10 +1,9 @@
 
 
-<div class="content" >
-  <div class="row">
+<div fxLayout="row wrap">
 
-
-  <!-- <div class="row justify-content-start">
+  <!--<div class="row">
+     <div class="row justify-content-start">
     <div class="col-4"> -->
   <mat-form-field appearance="fill">
     <!-- <mat-label>trademarks</mat-label> -->
@@ -31,7 +30,7 @@
 
 <!-- <div class="row justify-content-center">
   <div class="col-4"> -->
-  <mat-card  *ngFor="let product of products">
+  <mat-card fxFlex="33"  *ngFor="let product of products">
     <img mat-card-image src="{{product.photo}}" >
     <mat-card-title>{{ product.productName }}</mat-card-title>
     <mat-card-content>
@@ -76,8 +75,9 @@
                 Page  Page {{currentPage}} of Total page {{paginationService.exactPageList}} -->
              <!-- </div>
             </div>
+          </div>
           </div> -->
-        </div>
+
 
         </div>
 

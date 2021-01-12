@@ -10,5 +10,6 @@ namespace TIMSBack.Application.Inventory.Transfer.Queries
         public string QuantityStatusName { get; set; }
         public string SourceWareHouseName { get; set; }
         public string DestinationWareHouseName { get; set; }
+        public string Date { get; set; }
     }
 }

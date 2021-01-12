@@ -1,4 +1,5 @@
 import { from } from 'rxjs';
+
 import { Routes, RouterModule  } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -34,7 +35,7 @@ import { SuppliersComponent } from './Purchase/suppliers/suppliers.component';
 import { ProductsAndServicesComponent } from './inventory/products-and-services/products-and-services.component';
 import { TransfersComponent } from './inventory/transfers/transfers.component';
 import { WorkOrdersComponent } from './manufactoring/work-orders/work-orders.component';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -81,6 +82,7 @@ export function tokenGetter() {
     WorkOrdersComponent
   ],
   imports: [
+
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -98,8 +100,10 @@ export function tokenGetter() {
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     ToasterModule.forRoot(),
     BrowserAnimationsModule,
+
     JwtModule.forRoot({
       config: {
         tokenGetter,

@@ -1,3 +1,4 @@
+using System;
 using TIMSBack.Application;
 using TIMSBack.Application.Common.Interfaces;
 using TIMSBack.Infrastructure;
@@ -181,18 +182,18 @@ namespace TIMSBack.WebUI
                 endpoints.MapRazorPages();
             });
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
+            //    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+            //    spa.Options.SourcePath = "ClientApp";
+            //    spa.Options.StartupTimeout = new TimeSpan(0, 1, 0);
+            //    if (env.IsDevelopment())
+            //    {
+            //        spa.UseAngularCliServer(npmScript: "start");
+            //    }
+            //});
         }
     }
 }

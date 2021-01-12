@@ -3956,7 +3956,7 @@ export interface IStatus extends IBaseIdName {
 }
 
 export class Transfer extends BaseIdName implements ITransfer {
-    date?: Date;
+    dateTime?: Date;
     statusId?: number;
     status?: Status | undefined;
     quantityStatusId?: number;
@@ -3976,7 +3976,7 @@ export class Transfer extends BaseIdName implements ITransfer {
     init(_data?: any) {
         super.init(_data);
         if (_data) {
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.dateTime = _data["dateTime"] ? new Date(_data["dateTime"].toString()) : <any>undefined;
             this.statusId = _data["statusId"];
             this.status = _data["status"] ? Status.fromJS(_data["status"]) : <any>undefined;
             this.quantityStatusId = _data["quantityStatusId"];
@@ -4000,7 +4000,7 @@ export class Transfer extends BaseIdName implements ITransfer {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["dateTime"] = this.dateTime ? this.dateTime.toISOString() : <any>undefined;
         data["statusId"] = this.statusId;
         data["status"] = this.status ? this.status.toJSON() : <any>undefined;
         data["quantityStatusId"] = this.quantityStatusId;
@@ -4018,7 +4018,7 @@ export class Transfer extends BaseIdName implements ITransfer {
 }
 
 export interface ITransfer extends IBaseIdName {
-    date?: Date;
+    dateTime?: Date;
     statusId?: number;
     status?: Status | undefined;
     quantityStatusId?: number;
@@ -4247,6 +4247,7 @@ export class TransferDto extends Transfer implements ITransferDto {
     quantityStatusName?: string | undefined;
     sourceWareHouseName?: string | undefined;
     destinationWareHouseName?: string | undefined;
+    date?: string | undefined;
 
     constructor(data?: ITransferDto) {
         super(data);
@@ -4259,6 +4260,7 @@ export class TransferDto extends Transfer implements ITransferDto {
             this.quantityStatusName = _data["quantityStatusName"];
             this.sourceWareHouseName = _data["sourceWareHouseName"];
             this.destinationWareHouseName = _data["destinationWareHouseName"];
+            this.date = _data["date"];
         }
     }
 
@@ -4275,6 +4277,7 @@ export class TransferDto extends Transfer implements ITransferDto {
         data["quantityStatusName"] = this.quantityStatusName;
         data["sourceWareHouseName"] = this.sourceWareHouseName;
         data["destinationWareHouseName"] = this.destinationWareHouseName;
+        data["date"] = this.date;
         super.toJSON(data);
         return data; 
     }
@@ -4285,6 +4288,7 @@ export interface ITransferDto extends ITransfer {
     quantityStatusName?: string | undefined;
     sourceWareHouseName?: string | undefined;
     destinationWareHouseName?: string | undefined;
+    date?: string | undefined;
 }
 
 export interface FileResponse {
